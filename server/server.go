@@ -82,6 +82,9 @@ func (h *Hub) run() {
 			}
 
 			conn, err := tcpListener.Accept()
+			if opError, ok := err.(*net.OpError); ok && opError.Timeout() {
+				continue
+			}
 			if err != nil {
 				log.Fatalf("failed to accept tcp connection: %v", err)
 			}
